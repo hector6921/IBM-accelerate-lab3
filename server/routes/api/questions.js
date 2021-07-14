@@ -40,11 +40,11 @@ const shuffleArray = require('../../utils/shuffle');
  * 
  */
 router.get('/', (req, res) => {
-  // Remove the lines below and write your implementation
-  res.status(500).send({
-    error: 'not implemented'
-  })
-})
+    const allQuestions = Questions;
+    console.log(allQuestions.answer)
+    allQuestions.filter(allQuestions =>(delete allQuestions["answer"]))
+    res.status(200).send(allQuestions);
+});
 
 /**
  * Route details
@@ -57,11 +57,10 @@ router.get('/', (req, res) => {
  * }
  */
 router.get('/count', (req, res) => {
-  // Remove the lines below and write your implementation
-  res.status(500).send({
-    error: 'not implemented'
-  })
+   const numQuestion = Questions.length;
+   res.status(200).send({"count":  numQuestion});
 })
+
 
 /**
  * Route details
@@ -78,10 +77,14 @@ router.get('/count', (req, res) => {
  * }
  */
 router.get('/:qId', (req, res) => {
-  // Remove the lines below and write your implementation
-  res.status(500).send({
-    error: 'not implemented'
-  })
+  
+  //add Id to each question first 
+  console.log(req.params.qID);
+  const questionId  = Questions.filter((question => question.id == `${req.params.qId}`))
+  if (questionId !== null){
+    return res.status(200).send(questionId)
+  }
+  //keep receiving empty list 
 })
 
 
@@ -108,9 +111,7 @@ router.get('/:qId', (req, res) => {
  */
 router.post('/result', (req, res) => {
   // Remove the lines below and write your implementation
-  res.status(500).send({
-    error: 'not implemented'
-  })
+ 
 })
 
 
