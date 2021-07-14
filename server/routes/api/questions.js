@@ -41,6 +41,7 @@ const shuffleArray = require('../../utils/shuffle');
  */
 router.get('/', (req, res) => {
     const allQuestions = Questions;
+    console.log(allQuestions["answer"])
     allQuestions.filter(allQuestions =>(delete allQuestions["answer"]))
     res.status(200).send(allQuestions);
 });
@@ -77,13 +78,13 @@ router.get('/count', (req, res) => {
  */
 router.get('/:qId', (req, res) => {
   
-  //add Id to each question first 
+  //figure out how to add Id to each question first 
   console.log(req.params.qID);
   const questionId  = Questions.filter((question => question.id == `${req.params.qId}`))
   if (questionId !== null){
     return res.status(200).send(questionId)
   }
-  //keep receiving empty list 
+  //keep receiving empty list ???
 })
 
 
