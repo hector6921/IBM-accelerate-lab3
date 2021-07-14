@@ -41,7 +41,6 @@ const shuffleArray = require('../../utils/shuffle');
  */
 router.get('/', (req, res) => {
     const allQuestions = Questions;
-    console.log(allQuestions.answer)
     allQuestions.filter(allQuestions =>(delete allQuestions["answer"]))
     res.status(200).send(allQuestions);
 });
