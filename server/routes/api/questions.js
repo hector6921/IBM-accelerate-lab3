@@ -19,6 +19,7 @@ const Questions = require('../../models/questions-data.json')
 const shuffleArray = require('../../utils/shuffle');
 
 
+
 /**
  * Route details
  * api GET /api/questions
@@ -41,9 +42,7 @@ const shuffleArray = require('../../utils/shuffle');
  */
 router.get('/', (req, res) => {
   // Remove the lines below and write your implementation
-  res.status(500).send({
-    error: 'not implemented'
-  })
+  res.status(200).send(Questions)
 })
 
 /**
@@ -56,12 +55,15 @@ router.get('/', (req, res) => {
  *  count: 4
  * }
  */
-router.get('/count', (req, res) => {
-  // Remove the lines below and write your implementation
-  res.status(500).send({
-    error: 'not implemented'
-  })
-})
+ let count = Object.keys(Questions).length;
+ console.log(Questions.length, "works line 64")
+ router.get('/count', (req, res) => {
+   // Remove the lines below and write your implementation
+   var count = Questions.length;
+   var countReturn = {"count":count};
+  
+   res.send(countReturn)
+ })
 
 /**
  * Route details
