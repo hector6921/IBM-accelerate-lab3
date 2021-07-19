@@ -39,8 +39,10 @@ const shuffleArray = require('../../utils/shuffle');
  * 
  */
 router.get('/', (req, res) => {
-  // Remove the lines below and write your implementation
-  res.status(200).send(Questions)
+    const allQuestions = Questions;
+    console.log(allQuestions["answer"])
+    allQuestions.filter(allQuestions =>(delete allQuestions["answer"]))
+    res.status(200).send(allQuestions);
 })
 
 /**
@@ -53,16 +55,12 @@ router.get('/', (req, res) => {
  *  count: 4
  * }
  */
- let count = Object.keys(Questions).length;
- console.log(Questions.length, "works line 64")
  router.get('/count', (req, res) => {
    // Remove the lines below and write your implementation
    var count = Questions.length;
    var countReturn = {"count":count};
-  
-   res.send(countReturn)
+   res.status(200).send(countReturn)
  })
-
 /**
  * Route details
  * api GET /api/questions/:qId
@@ -78,39 +76,41 @@ router.get('/', (req, res) => {
  * }
  */
 router.get('/:qId', (req, res) => {
+  //figure out how to add Id to each question first 
+  console.log(req.params.qID);
+  const questionId  = Questions.filter((question => question.id == `${req.params.qId}`))
+  if (questionId !== null){
+    return res.status(200).send(questionId)
+  }
+  //keep receiving empty list ???
+})
+
+
+/**
+ * Route details
+ * api POST /api/questions/result
+ * Description: This will receive a body with user
+ * entered answers and will return the results. 
+ * Calculation of the result will happen here and you
+ * would only send the results.
+ * 
+ * Structure of body JSON:
+ * {
+ *    'questionID': 'user-answer',
+ *    'questionID': 'user-answer'
+ * }
+ * 
+ * Structure of the return JSON:
+ * {
+ *    summary: 'passed OR failed',
+ *    score: (how many answers were correct),
+ *    total: (how many questions were there)
+ * }
+ */
+router.post('/result', (req, res) => {
   // Remove the lines below and write your implementation
-  res.status(500).send({
-    error: 'not implemented'
-  })
-}) 
  
- /**
-  * Route details
-  * api POST /api/questions/result
-  * Description: This will receive a body with user
-  * entered answers and will return the results. 
-  * Calculation of the result will happen here and you
-  * would only send the results.
-  * 
-  * Structure of body JSON:
-  * {
-  *    'questionID': 'user-answer',
-  *    'questionID': 'user-answer'
-  * }
-  * 
-  * Structure of the return JSON:
-  * {
-  *    summary: 'passed OR failed',
-  *    score: (how many answers were correct),
-  *    total: (how many questions were there)
-  * }
-  */
- router.post('/result', (req, res) => {
-   // Remove the lines below and write your implementation
-   res.status(500).send({
-     error: 'not implemented'
-   })
- })
- 
- 
- module.exports = router;
+})
+
+
+module.exports = router;
