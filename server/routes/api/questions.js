@@ -1,3 +1,4 @@
+
 /**
  * This is where you will create routes for our
  * questions API
@@ -10,13 +11,22 @@
  * data from mongodb and return appropriate results
  */
 
- const express = require('express');
- const router = express.Router();
- 
+const express = require('express');
+const router = express.Router();
+
 // Question Data
-var Questions = require('../../models/questions-data.json')
-// Hint: get a bonus task here
+const Questions = require('../../models/questions-data.json')
 const shuffleArray = require('../../utils/shuffle');
+//Questions = shuffleArray(Questions);
+let newQuestions = Questions;
+
+function makeNewQues(){
+  newQuestions.map((item,index)=>Object.assign(item,{id:`${index}`}));
+  shuffleArray(newQuestions.map(item=>item.options))
+  //console.log(newQuestions.map((item)=>(item.id)))
+}
+
+
 
 /**
  * Route details
@@ -38,11 +48,17 @@ const shuffleArray = require('../../utils/shuffle');
  * ]
  * 
  */
-router.get('/', (req, res) => {
-    const allQuestions = Questions;
-    console.log(allQuestions["answer"])
-    allQuestions.filter(allQuestions =>(delete allQuestions["answer"]))
-    res.status(200).send(allQuestions);
+router.get('/',(req, res) => {
+  makeNewQues();
+  // Remove the lines below and write your implementation
+  var questionsList = Questions;
+  questionsList.map(item=>(delete item.answer))
+  res.status(200).send(
+    questionsList
+    )
+    // Object.values(Questions).map((item,index)=>
+    // (Object.entries(item).filter(item2=>(item2[0]!="answer"))))
+    // )
 })
 
 /**
@@ -55,12 +71,16 @@ router.get('/', (req, res) => {
  *  count: 4
  * }
  */
- router.get('/count', (req, res) => {
-   // Remove the lines below and write your implementation
-   var count = Questions.length;
-   var countReturn = {"count":count};
-   res.status(200).send(countReturn)
- })
+let count = Object.keys(Questions).length;
+//console.log(Questions.length, "works line 75")
+router.get('/count', (req, res) => {
+  // Remove the lines below and write your implementation
+  var count = Questions.length;
+  var countReturn = {"count":count};
+ 
+  res.send(countReturn)
+})
+
 /**
  * Route details
  * api GET /api/questions/:qId
@@ -76,13 +96,10 @@ router.get('/', (req, res) => {
  * }
  */
 router.get('/:qId', (req, res) => {
-  //figure out how to add Id to each question first 
-  console.log(req.params.qID);
-  const questionId  = Questions.filter((question => question.id == `${req.params.qId}`))
-  if (questionId !== null){
-    return res.status(200).send(questionId)
-  }
-  //keep receiving empty list ???
+  // Remove the lines below and write your implementation
+  var questionQuery = newQuestions; 
+  //console.log(req.query.qId)
+  res.status(200).send(questionQuery.filter((item)=>(item.id===`${req.query.qId}`)))
 })
 
 
@@ -109,7 +126,27 @@ router.get('/:qId', (req, res) => {
  */
 router.post('/result', (req, res) => {
   // Remove the lines below and write your implementation
- 
+  var count = Questions.length;
+  var score = 0;
+ // ######################## answer calc #################################
+  var userAnswers = req.body
+  var answers = Object.values(Questions).map((item)=>(item.answer))
+  for(i=1;i<=count;i++){
+    if(answers[i] === userAnswers[i]){score++;}
+  }
+
+  var passFail = score>=(count/2)?"Pass":"Fail";
+  var returnBody = {
+       "summary": passFail,
+       "score": score,
+       "total": count
+   }
+  
+  
+  res.send(returnBody)
+ // console.log(req.body)
+  //console.log(answers)
+  //console.log(score)
 })
 
 
