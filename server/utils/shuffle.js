@@ -12,16 +12,13 @@
  * @returns {Array} shuffled array
  */
 function shuffleArray(array) {
+  
   const arr = array.slice(0)
-  // Implementation goes here
-  var currentIndex = arr.length,  randomIndex;
-
-  while (0 !== currentIndex) {
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex--;
-    [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
-  }
-
+  console.log(arr[0])
+   // Implementation goes here
+  arr.map((collec)=>collec.sort(()=>Math.random()-0.5).map((item,num)=>item))
+  
+//console.log(arr.map((collec)=>collec.sort(()=>Math.random()*(collec.length +1)).map((item,num)=>item)))
   return arr
 }
 
