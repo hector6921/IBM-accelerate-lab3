@@ -10,14 +10,13 @@
  * data from mongodb and return appropriate results
  */
 
-const express = require('express');
-const router = express.Router();
-
+ const express = require('express');
+ const router = express.Router();
+ 
 // Question Data
-const Questions = require('../../models/questions-data.json')
+var Questions = require('../../models/questions-data.json')
 // Hint: get a bonus task here
 const shuffleArray = require('../../utils/shuffle');
-
 
 /**
  * Route details
@@ -44,7 +43,7 @@ router.get('/', (req, res) => {
     console.log(allQuestions["answer"])
     allQuestions.filter(allQuestions =>(delete allQuestions["answer"]))
     res.status(200).send(allQuestions);
-});
+})
 
 /**
  * Route details
@@ -56,12 +55,12 @@ router.get('/', (req, res) => {
  *  count: 4
  * }
  */
-router.get('/count', (req, res) => {
-   const numQuestion = Questions.length;
-   res.status(200).send({"count":  numQuestion});
-})
-
-
+ router.get('/count', (req, res) => {
+   // Remove the lines below and write your implementation
+   var count = Questions.length;
+   var countReturn = {"count":count};
+   res.status(200).send(countReturn)
+ })
 /**
  * Route details
  * api GET /api/questions/:qId
@@ -77,7 +76,6 @@ router.get('/count', (req, res) => {
  * }
  */
 router.get('/:qId', (req, res) => {
-  
   //figure out how to add Id to each question first 
   console.log(req.params.qID);
   const questionId  = Questions.filter((question => question.id == `${req.params.qId}`))
