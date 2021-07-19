@@ -10,15 +10,13 @@
  * data from mongodb and return appropriate results
  */
 
-const express = require('express');
-const router = express.Router();
-
+ const express = require('express');
+ const router = express.Router();
+ 
 // Question Data
-const Questions = require('../../models/questions-data.json')
+var Questions = require('../../models/questions-data.json')
 // Hint: get a bonus task here
 const shuffleArray = require('../../utils/shuffle');
-
-
 
 /**
  * Route details
@@ -84,36 +82,35 @@ router.get('/:qId', (req, res) => {
   res.status(500).send({
     error: 'not implemented'
   })
-})
-
-
-/**
- * Route details
- * api POST /api/questions/result
- * Description: This will receive a body with user
- * entered answers and will return the results. 
- * Calculation of the result will happen here and you
- * would only send the results.
- * 
- * Structure of body JSON:
- * {
- *    'questionID': 'user-answer',
- *    'questionID': 'user-answer'
- * }
- * 
- * Structure of the return JSON:
- * {
- *    summary: 'passed OR failed',
- *    score: (how many answers were correct),
- *    total: (how many questions were there)
- * }
- */
-router.post('/result', (req, res) => {
-  // Remove the lines below and write your implementation
-  res.status(500).send({
-    error: 'not implemented'
-  })
-})
-
-
-module.exports = router;
+}) 
+ 
+ /**
+  * Route details
+  * api POST /api/questions/result
+  * Description: This will receive a body with user
+  * entered answers and will return the results. 
+  * Calculation of the result will happen here and you
+  * would only send the results.
+  * 
+  * Structure of body JSON:
+  * {
+  *    'questionID': 'user-answer',
+  *    'questionID': 'user-answer'
+  * }
+  * 
+  * Structure of the return JSON:
+  * {
+  *    summary: 'passed OR failed',
+  *    score: (how many answers were correct),
+  *    total: (how many questions were there)
+  * }
+  */
+ router.post('/result', (req, res) => {
+   // Remove the lines below and write your implementation
+   res.status(500).send({
+     error: 'not implemented'
+   })
+ })
+ 
+ 
+ module.exports = router;
