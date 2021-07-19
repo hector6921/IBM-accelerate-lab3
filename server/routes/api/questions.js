@@ -17,76 +17,72 @@
 var Questions = require('../../models/questions-data.json')
 // Hint: get a bonus task here
 const shuffleArray = require('../../utils/shuffle');
-console.log("Questions before", Questions);
-Questions = shuffleArray(Questions);
-console.log("Questions after", Questions);
- 
- /**
-  * Route details
-  * api GET /api/questions
-  * Description: Get all questions in the database
-  * IMPORTANT: remove the answers from it's data
-  * we don't want the client to know the answer.
-  * 
-  * Structure of the return JSON:
-  * [
-  *    {
-  *      question: 'sample question',
-  *      options: [
-  *        'option1',
-  *        'option2'
-  *      ],
-  *      id: '1234'
-  *    }
-  * ]
-  * 
-  */
- router.get('/', (req, res) => {
+
+/**
+ * Route details
+ * api GET /api/questions
+ * Description: Get all questions in the database
+ * IMPORTANT: remove the answers from it's data
+ * we don't want the client to know the answer.
+ * 
+ * Structure of the return JSON:
+ * [
+ *    {
+ *      question: 'sample question',
+ *      options: [
+ *        'option1',
+ *        'option2'
+ *      ],
+ *      id: '1234'
+ *    }
+ * ]
+ * 
+ */
+router.get('/', (req, res) => {
+  // Remove the lines below and write your implementation
+  res.status(200).send(Questions)
+})
+
+/**
+ * Route details
+ * api GET /api/questions/count
+ * Description: This will get the count of the questions
+ * from the database and return it 
+ * Structure of the return JSON:
+ * {
+ *  count: 4
+ * }
+ */
+ let count = Object.keys(Questions).length;
+ console.log(Questions.length, "works line 64")
+ router.get('/count', (req, res) => {
    // Remove the lines below and write your implementation
-   res.status(200).send(Questions)
+   var count = Questions.length;
+   var countReturn = {"count":count};
+  
+   res.send(countReturn)
  })
- 
- /**
-  * Route details
-  * api GET /api/questions/count
-  * Description: This will get the count of the questions
-  * from the database and return it 
-  * Structure of the return JSON:
-  * {
-  *  count: 4
-  * }
-  */
-  let count = Object.keys(Questions).length;
-  console.log(Questions.length, "works line 64")
-  router.get('/count', (req, res) => {
-    // Remove the lines below and write your implementation
-    var count = Questions.length;
-    var countReturn = {"count":count};
-   
-    res.send(countReturn)
+
+/**
+ * Route details
+ * api GET /api/questions/:qId
+ * Description: This will get one question given the question ID
+ * Structure of the return JSON:
+ * {
+ *    question: 'sample question',
+ *    options: [
+ *      'option1',
+ *      'option2'
+ *    ],
+ *    id: '1234'
+ * }
+ */
+router.get('/:qId', (req, res) => {
+  // Remove the lines below and write your implementation
+  res.status(500).send({
+    error: 'not implemented'
   })
- 
- /**
-  * Route details
-  * api GET /api/questions/:qId
-  * Description: This will get one question given the question ID
-  * Structure of the return JSON:
-  * {
-  *    question: 'sample question',
-  *    options: [
-  *      'option1',
-  *      'option2'
-  *    ],
-  *    id: '1234'
-  * }
-  */
- router.get('/:qId', (req, res) => {
-   // Remove the lines below and write your implementation
-   res.status(500).send({
-     error: 'not implemented'
-   })
- })
- 
+}) 
  
  /**
   * Route details
