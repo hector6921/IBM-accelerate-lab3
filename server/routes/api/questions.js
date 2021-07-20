@@ -18,15 +18,63 @@ const router = express.Router();
 const Questions = require('../../models/questions-data.json')
 const shuffleArray = require('../../utils/shuffle');
 //Questions = shuffleArray(Questions);
-let newQuestions = Questions;
-
+let index = Questions;
+ 
 function makeNewQues(){
+  let newQuestions = [...index];
   newQuestions.map((item,index)=>Object.assign(item,{id:`${index}`}));
   shuffleArray(newQuestions.map(item=>item.options))
   //console.log(newQuestions.map((item)=>(item.id)))
+  return [...newQuestions]
 }
 
+/**
+ * Route details
+ * api POST /api/questions/result
+ * Description: This will receive a body with user
+ * entered answers and will return the results. 
+ * Calculation of the result will happen here and you
+ * would only send the results.
+ * 
+ * Structure of body JSON:
+ * {
+ *    'questionID': 'user-answer',
+ *    'questionID': 'user-answer'
+ * }
+ * 
+ * Structure of the return JSON:
+ * {
+ *    summary: 'passed OR failed',
+ *    score: (how many answers were correct),
+ *    total: (how many questions were there)
+ * }
+ */
+ router.post('/result', (req, res) => {
+  // Remove the lines below and write your implementation
+  var count = Questions.length;
+  var score = 0;
+ // ######################## answer calc #################################
+  var userAnswers = req.body
+  const answers = Questions.map((item)=>(item.answer))
+  for(var i=0;i<count;i++){
+    if(answers[i] == userAnswers[i]){score++;}
+  }
 
+  var passFail = score>=(count/2)?"Pass":"Fail";
+  var returnBody = {
+       "summary": passFail,
+       "score": score,
+       "total": count
+   }
+  
+  
+  res.send(returnBody)
+  console.log(req.body, " body req")
+  console.log(answers, " answers")
+  //console.log(answers)
+  //console.log(score)
+  //score=0;
+})
 
 /**
  * Route details
@@ -48,17 +96,24 @@ function makeNewQues(){
  * ]
  * 
  */
+ 
 router.get('/',(req, res) => {
-  makeNewQues();
   // Remove the lines below and write your implementation
-  var questionsList = Questions;
-  questionsList.map(item=>(delete item.answer))
+  //let questionsList = [...makeNewQues()];
+  //Object.values(questionsList).filter(item=>delete item['answer'])
+  // console.log(questionsList, ' queslist')
+  //const {["answer"]:_, ...quesNoans} = questionsList;
+  // removeAns()
+  // console.log(quesNoans, 'noans')
+  //questionsList.map((item)=>(delete item['answer']))
+ 
   res.status(200).send(
-    questionsList
+    makeNewQues()
     )
     // Object.values(Questions).map((item,index)=>
     // (Object.entries(item).filter(item2=>(item2[0]!="answer"))))
     // )
+    console.log(questionsList)
 })
 
 /**
@@ -97,57 +152,13 @@ router.get('/count', (req, res) => {
  */
 router.get('/:qId', (req, res) => {
   // Remove the lines below and write your implementation
-  var questionQuery = newQuestions; 
+  var questionQuery = makeNewQues(); 
   //console.log(req.query.qId)
   res.status(200).send(questionQuery.filter((item)=>(item.id===`${req.query.qId}`)))
 })
 
 
-/**
- * Route details
- * api POST /api/questions/result
- * Description: This will receive a body with user
- * entered answers and will return the results. 
- * Calculation of the result will happen here and you
- * would only send the results.
- * 
- * Structure of body JSON:
- * {
- *    'questionID': 'user-answer',
- *    'questionID': 'user-answer'
- * }
- * 
- * Structure of the return JSON:
- * {
- *    summary: 'passed OR failed',
- *    score: (how many answers were correct),
- *    total: (how many questions were there)
- * }
- */
-router.post('/result', (req, res) => {
-  // Remove the lines below and write your implementation
-  var count = Questions.length;
-  var score = 0;
- // ######################## answer calc #################################
-  var userAnswers = req.body
-  var answers = Object.values(Questions).map((item)=>(item.answer))
-  for(i=1;i<=count;i++){
-    if(answers[i] === userAnswers[i]){score++;}
-  }
 
-  var passFail = score>=(count/2)?"Pass":"Fail";
-  var returnBody = {
-       "summary": passFail,
-       "score": score,
-       "total": count
-   }
-  
-  
-  res.send(returnBody)
- // console.log(req.body)
-  //console.log(answers)
-  //console.log(score)
-})
 
 
 module.exports = router;
